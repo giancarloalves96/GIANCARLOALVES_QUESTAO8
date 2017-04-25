@@ -1,26 +1,65 @@
 package codigo;
 
+import excecoes.LivroInexistenteException;
+import excecoes.UsuarioInexistenteException;
+
 public class Usuario {
 
-	protected String nome_;
-	protected boolean bloqueado_;
+	private String nome_;
+	private boolean bloqueado_;
+	private BancoUsuarios bancoUsuarios_;
+	private BancoLivros bancoLivros_;
 	
 	public Usuario(String nome){
 		nome_ = nome;
 		bloqueado_ = false;
 	}
 	
-	Usuario(UsuarioMaster master){
-		nome_ = master.nome_;
-		bloqueado_ = master.bloqueado_;
-	}
-
 	public String getNome() {
 		return nome_;
 	}
 	
 	public boolean isBloqueado() {
 		return bloqueado_;
+	}
+	
+	public boolean cadastrar(){
+		inicBancoUsuarios();
+		return bancoUsuarios_.adicionarUsuario(this);
+	}
+	
+	public SituacaoEnum situacaoLivro(String nomeLivro) throws UsuarioInexistenteException, LivroInexistenteException{
+		inicBancoUsuarios();
+		if(!bancoUsuarios_.estaCadastrado(nome_))
+			throw new UsuarioInexistenteException("Usuário não está cadastrado.");
+		inicBancoLivros();
+		if(!bancoLivros_.existeLivro(nomeLivro))
+			throw new LivroInexistenteException("Livro não escontrado.");
+		Livro livro = bancoLivros_.recuperarLivro(nomeLivro);
+		return livro.getSituacao();
+	}
+	
+	private void inicBancoUsuarios(){
+		if(bancoUsuarios_==null)
+			bancoUsuarios_ = BancoUsuarios.getInstance();
+	}
+	
+	private void inicBancoLivros(){
+		if(bancoLivros_==null)
+			bancoLivros_ = BancoLivros.getInstance();
+	}
+	
+	void copy(Usuario usuario){
+		nome_ = usuario.nome_;
+		bloqueado_ = usuario.bloqueado_;
+	}
+	
+	void bloquear(){
+		bloqueado_ = true;
+	}
+	
+	void desbloquear(){
+		bloqueado_ = false;
 	}
 	
 	@Override
@@ -42,10 +81,5 @@ public class Usuario {
 	    
 	    
 	    return true;
-	}
-	
-	void copy(Usuario usuario){
-		nome_ = usuario.nome_;
-		bloqueado_ = usuario.bloqueado_;
 	}
 }

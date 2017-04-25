@@ -23,18 +23,14 @@ public class Bibliotecaria {
 	}
 	
 	public boolean bloquearUsuario(Usuario usuario){
-		UsuarioMaster master = new UsuarioMaster(usuario);
-		master.bloquear();
-		Usuario novoUsuario = new Usuario(master);
-		usuario.copy(novoUsuario);
+		usuario.bloquear();
+		usuarios_.atualizarUsuario(usuario);
 		return true;
 	}
 	
 	public boolean desbloquearUsuario(Usuario usuario){
-		UsuarioMaster master = new UsuarioMaster(usuario);
-		master.desbloquear();
-		Usuario novoUsuario = new Usuario(master);
-		usuario.copy(novoUsuario);
+		usuario.desbloquear();
+		usuarios_.atualizarUsuario(usuario);
 		return true;
 	}
 	

@@ -23,6 +23,12 @@ class BancoLivros {
 		return true;
 	}
 	
+	boolean existeLivro(String nomeLivro){
+		if(livros_.containsKey(nomeLivro))
+			return true;
+		return false;
+	}
+	
 	public boolean adicionarLivro(Livro novoLivro){
 		String nome = novoLivro.getNome();
 		if(livros_.containsKey(nome))

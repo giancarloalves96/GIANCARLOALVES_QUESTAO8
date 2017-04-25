@@ -15,6 +15,20 @@ class BancoUsuarios {
 		return instance_;
 	}
 	
+	boolean estaCadastrado(String nomeUsuario){
+		if(usuarios_.containsKey(nomeUsuario))
+			return true;
+		return false;
+	}
+	
+	boolean atualizarUsuario(Usuario usuario){
+		String nome = usuario.getNome();
+		if(!usuarios_.containsKey(nome))
+			return false;
+		usuarios_.put(nome, usuario);
+		return true;
+	}
+	
 	public boolean adicionarUsuario(Usuario novoUsuario){
 		String nome = novoUsuario.getNome();
 		if(usuarios_.containsKey(nome))
