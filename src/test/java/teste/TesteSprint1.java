@@ -65,15 +65,22 @@ public class TesteSprint1 {
 	@Test
 	public void testBloquearUsuarioNormalmente(){
 		assertEquals(SituacaoUsuarioEnum.LIBERADO, joao_.getSituacao());
-		bibliotecaria_.bloquearUsuarioPorAtraso(joao_);
+		bibliotecaria_.adicionarUsuario(joao_);
+		bibliotecaria_.bloquearUsuarioPorAtraso("João");
+		joao_ = bibliotecaria_.recuperarUsuario("João");
 		assertEquals(SituacaoUsuarioEnum.BLOQUEADO_POR_ATRASO, joao_.getSituacao());
+		bibliotecaria_.removerUsuario("João");
 	}
 
 	@Test
 	public void testDesbloquearUsuario(){
-		bibliotecaria_.bloquearUsuarioPorAtraso(joao_);
+		bibliotecaria_.adicionarUsuario(joao_);
+		bibliotecaria_.bloquearUsuarioPorAtraso("João");
+		joao_ = bibliotecaria_.recuperarUsuario("João");
 		assertEquals(SituacaoUsuarioEnum.BLOQUEADO_POR_ATRASO, joao_.getSituacao());
-		bibliotecaria_.desbloquearUsuarioPorAtraso(joao_);
+		bibliotecaria_.desbloquearUsuarioPorAtraso("João");
+		joao_ = bibliotecaria_.recuperarUsuario("João");
 		assertEquals(SituacaoUsuarioEnum.LIBERADO, joao_.getSituacao());
+		bibliotecaria_.removerUsuario("João");
 	}
 }

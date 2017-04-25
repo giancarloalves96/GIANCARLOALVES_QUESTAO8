@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="4" failures="0" name="teste.TesteSprint4" time="0" errors="0" skipped="0">
+<testsuite tests="5" failures="0" name="teste.TesteSprint5" time="0" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_25\jre\bin"/>
@@ -61,8 +61,9 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="teste.TesteSprint4" name="testDevolucoesAtualizamEmprestimos" time="0"/>
-  <testcase classname="teste.TesteSprint4" name="testEmprestimosNoPrazo" time="0"/>
-  <testcase classname="teste.TesteSprint4" name="testUsuarioSaberSituacao" time="0"/>
-  <testcase classname="teste.TesteSprint4" name="testEmprestimoForaDoPrazo" time="0"/>
+  <testcase classname="teste.TesteSprint5" name="testBibliotecariaAvaliaSituacaoDeUmLivro" time="0"/>
+  <testcase classname="teste.TesteSprint5" name="testBibliotecariaAvaliaSituacaoDeUmLivroNaoExistente" time="0"/>
+  <testcase classname="teste.TesteSprint5" name="testUsuarioBloqueadoPorCobrancaNaoPodePegarLivro" time="0"/>
+  <testcase classname="teste.TesteSprint5" name="testUsuarioBloqueadoPorAtrasoNaoPodePegarLivro" time="0"/>
+  <testcase classname="teste.TesteSprint5" name="testBloquearUsuarioPorCobranca" time="0"/>
 </testsuite>

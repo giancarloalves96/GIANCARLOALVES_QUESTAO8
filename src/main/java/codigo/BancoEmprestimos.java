@@ -64,4 +64,8 @@ class BancoEmprestimos {
 		
 		atrasado.atrasado();
 	}
+
+	public void removerUsuario(String nome) {
+		emprestimos_.remove(nome);
+	}
 }

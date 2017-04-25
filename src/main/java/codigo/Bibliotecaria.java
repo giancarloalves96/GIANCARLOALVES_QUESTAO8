@@ -2,6 +2,9 @@ package codigo;
 
 import java.util.ArrayList;
 
+import excecoes.LivroInexistenteException;
+import excecoes.UsuarioInexistenteException;
+
 public class Bibliotecaria {
 	
 	private BancoUsuarios usuarios_;
@@ -23,10 +26,22 @@ public class Bibliotecaria {
 	}
 	
 	public boolean removerUsuario(String nome){
+		emprestimos_.removerUsuario(nome);
 		return usuarios_.removerUsuario(nome);
 	}
 	
-	public boolean bloquearUsuarioPorAtraso(Usuario usuario){
+	public boolean bloquearUsuarioPorCobranca(String nomeUsuario){
+		Usuario usuario = usuarios_.recuperarUsuario(nomeUsuario);
+		if(usuario == null)
+			return false;
+		usuario.bloquearPorCobranca();
+		return true;
+	}
+	
+	public boolean bloquearUsuarioPorAtraso(String nomeUsuario){
+		Usuario usuario = usuarios_.recuperarUsuario(nomeUsuario);
+		if(usuario == null)
+			return false;
 		if(usuario.getSituacao()==SituacaoUsuarioEnum.BLOQUEADO_POR_COBRANCA)
 			return false;
 		usuario.bloquearPorAtraso();
@@ -34,7 +49,10 @@ public class Bibliotecaria {
 		return true;
 	}
 	
-	public boolean desbloquearUsuarioPorAtraso(Usuario usuario){
+	public boolean desbloquearUsuarioPorAtraso(String nomeUsuario){
+		Usuario usuario = usuarios_.recuperarUsuario(nomeUsuario);
+		if(usuario == null)
+			return false;
 		if(usuario.getSituacao()==SituacaoUsuarioEnum.BLOQUEADO_POR_COBRANCA)
 			return false;
 		usuario.desbloquear();
@@ -50,6 +68,8 @@ public class Bibliotecaria {
 		if(usuario == null)
 			return false;
 		if(livro.getSituacao()!=SituacaoLivroEnum.DISPONIVEL)
+			return false;
+		if(usuario.getSituacao()!=SituacaoUsuarioEnum.LIBERADO)
 			return false;
 		
 		livro.emprestarLivro(nomeUsuario);
@@ -79,18 +99,16 @@ public class Bibliotecaria {
 		for(Emprestimo emprestimo : emprestimos)
 			if(emprestimo.isAtrasado())
 				flag = true;
-		if(!flag){
-			Usuario usuario = usuarios_.recuperarUsuario(nomeUsuario);
-			if(usuario!=null)
-				desbloquearUsuarioPorAtraso(usuario);
-		}
+		if(!flag)
+			desbloquearUsuarioPorAtraso(nomeUsuario);
+		
 	}
 
 	public boolean emprestimoAtrasado(String nomeLivro, String nomeUsuario){
 		if(!emprestimos_.existeEmprestimo(nomeUsuario, nomeLivro))
 			return false;
 		emprestimos_.atrasarEmprestimo(nomeUsuario, nomeLivro);
-		bloquearUsuarioPorAtraso(usuarios_.recuperarUsuario(nomeUsuario));
+		bloquearUsuarioPorAtraso(nomeUsuario);
 		return true;
 	}
 
@@ -102,5 +120,12 @@ public class Bibliotecaria {
 	
 	public Livro recuperarLivro(String nomeLivro){
 		return livros_.recuperarLivro(nomeLivro);
+	}
+	
+	public SituacaoLivroEnum situacaoLivro(String nomeLivro) throws LivroInexistenteException{
+		if(!livros_.existeLivro(nomeLivro))
+			throw new LivroInexistenteException("Livro não escontrado.");
+		Livro livro = livros_.recuperarLivro(nomeLivro);
+		return livro.getSituacao();
 	}
 }
