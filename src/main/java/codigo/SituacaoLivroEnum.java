@@ -1,5 +1,5 @@
 package codigo;
 
-public enum SituacaoEnum {
+public enum SituacaoLivroEnum {
 	RETIRADO, DISPONIVEL, EXTRAVIADO;
 }

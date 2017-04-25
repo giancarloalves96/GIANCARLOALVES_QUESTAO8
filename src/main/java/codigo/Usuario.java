@@ -1,26 +1,38 @@
 package codigo;
 
+import java.util.ArrayList;
+
 import excecoes.LivroInexistenteException;
 import excecoes.UsuarioInexistenteException;
 
 public class Usuario {
 
 	private String nome_;
-	private boolean bloqueado_;
+	private SituacaoUsuarioEnum situacao_;
 	private BancoUsuarios bancoUsuarios_;
 	private BancoLivros bancoLivros_;
+	private BancoEmprestimos bancoEmprestimos_;
 	
 	public Usuario(String nome){
 		nome_ = nome;
-		bloqueado_ = false;
+		situacao_ = SituacaoUsuarioEnum.LIBERADO;
 	}
 	
 	public String getNome() {
 		return nome_;
 	}
 	
-	public boolean isBloqueado() {
-		return bloqueado_;
+	public SituacaoUsuarioEnum getSituacao() {
+		return situacao_;
+	}
+	
+	public String situacaoEmprestimos(){
+		inicBancoEmprestimos();
+		ArrayList<Emprestimo> emprestimos = bancoEmprestimos_.recuperarEmprestimos(nome_);
+		String msg = "Empréstimos realizados por "+nome_+":\n";
+		for(Emprestimo emprestimo : emprestimos)
+			msg+=emprestimo.toString();
+		return msg;
 	}
 	
 	public boolean cadastrar(){
@@ -28,7 +40,7 @@ public class Usuario {
 		return bancoUsuarios_.adicionarUsuario(this);
 	}
 	
-	public SituacaoEnum situacaoLivro(String nomeLivro) throws UsuarioInexistenteException, LivroInexistenteException{
+	public SituacaoLivroEnum situacaoLivro(String nomeLivro) throws UsuarioInexistenteException, LivroInexistenteException{
 		inicBancoUsuarios();
 		if(!bancoUsuarios_.estaCadastrado(nome_))
 			throw new UsuarioInexistenteException("Usuário não está cadastrado.");
@@ -49,17 +61,26 @@ public class Usuario {
 			bancoLivros_ = BancoLivros.getInstance();
 	}
 	
-	void copy(Usuario usuario){
-		nome_ = usuario.nome_;
-		bloqueado_ = usuario.bloqueado_;
+	private void inicBancoEmprestimos(){
+		if(bancoEmprestimos_==null)
+			bancoEmprestimos_ = BancoEmprestimos.getInstance();
 	}
 	
-	void bloquear(){
-		bloqueado_ = true;
+	void copy(Usuario usuario){
+		nome_ = usuario.nome_;
+		situacao_ = usuario.situacao_;
+	}
+	
+	void bloquearPorAtraso(){
+		situacao_ = SituacaoUsuarioEnum.BLOQUEADO_POR_ATRASO;
+	}
+	
+	void bloquearPorCobranca(){
+		situacao_ = SituacaoUsuarioEnum.BLOQUEADO_POR_COBRANCA;
 	}
 	
 	void desbloquear(){
-		bloqueado_ = false;
+		situacao_ = SituacaoUsuarioEnum.LIBERADO;
 	}
 	
 	@Override
@@ -74,11 +95,9 @@ public class Usuario {
 	    if ((nome_ == null) ? (other.nome_ != null) : !nome_.equals(other.nome_)) {
 	        return false;
 	    }
-	    if(bloqueado_ && !other.bloqueado_ || !bloqueado_ && other.bloqueado_){
+	    if(situacao_ != other.situacao_){
 	    	return false;
 	    }
-	    // Próximos campos
-	    
 	    
 	    return true;
 	}

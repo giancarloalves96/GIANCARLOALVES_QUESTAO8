@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import codigo.Bibliotecaria;
+import codigo.SituacaoUsuarioEnum;
 import codigo.Usuario;
 
 public class TesteSprint1 {
@@ -63,16 +64,16 @@ public class TesteSprint1 {
 	
 	@Test
 	public void testBloquearUsuarioNormalmente(){
-		assertFalse(joao_.isBloqueado());
-		bibliotecaria_.bloquearUsuario(joao_);
-		assertTrue(joao_.isBloqueado());
+		assertEquals(SituacaoUsuarioEnum.LIBERADO, joao_.getSituacao());
+		bibliotecaria_.bloquearUsuarioPorAtraso(joao_);
+		assertEquals(SituacaoUsuarioEnum.BLOQUEADO_POR_ATRASO, joao_.getSituacao());
 	}
 
 	@Test
 	public void testDesbloquearUsuario(){
-		bibliotecaria_.bloquearUsuario(joao_);
-		assertTrue(joao_.isBloqueado());
-		bibliotecaria_.desbloquearUsuario(joao_);
-		assertFalse(joao_.isBloqueado());
+		bibliotecaria_.bloquearUsuarioPorAtraso(joao_);
+		assertEquals(SituacaoUsuarioEnum.BLOQUEADO_POR_ATRASO, joao_.getSituacao());
+		bibliotecaria_.desbloquearUsuarioPorAtraso(joao_);
+		assertEquals(SituacaoUsuarioEnum.LIBERADO, joao_.getSituacao());
 	}
 }

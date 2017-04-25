@@ -3,19 +3,19 @@ package codigo;
 public class Livro {
 
 	private String nome_;
-	private SituacaoEnum situacao_;
+	private SituacaoLivroEnum situacao_;
 	private String nomeUsuario_;
 	
 	public Livro(String nome){
 		nome_ = nome;
-		situacao_ = SituacaoEnum.DISPONIVEL;
+		situacao_ = SituacaoLivroEnum.DISPONIVEL;
 	}
 
 	public String getNome() {
 		return nome_;
 	}
 	
-	public SituacaoEnum getSituacao(){
+	public SituacaoLivroEnum getSituacao(){
 		return situacao_;
 	}
 	
@@ -24,12 +24,12 @@ public class Livro {
 	}
 	
 	void emprestarLivro(String nomeUsuario){
-		situacao_ = SituacaoEnum.RETIRADO;
+		situacao_ = SituacaoLivroEnum.RETIRADO;
 		nomeUsuario_ = nomeUsuario;
 	}
 
 	public void devolvido() {
-		situacao_ = SituacaoEnum.DISPONIVEL;
+		situacao_ = SituacaoLivroEnum.DISPONIVEL;
 		nomeUsuario_ = null;
 	}
 }

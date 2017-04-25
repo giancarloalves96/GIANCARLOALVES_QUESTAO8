@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import codigo.Bibliotecaria;
 import codigo.Livro;
-import codigo.SituacaoEnum;
+import codigo.SituacaoLivroEnum;
 import codigo.Usuario;
 import excecoes.LivroInexistenteException;
 import excecoes.UsuarioInexistenteException;
@@ -30,9 +30,9 @@ public class TesteSprint3 {
 	
 	@Test
 	public void testNaoCadastraSeTiverNomeRepetido(){
-		Usuario usuario = new Usuario("João 3");
+		Usuario usuario = new Usuario("Joãozinho");
 		assertTrue(usuario.cadastrar());
-		usuario = new Usuario("João 3");
+		usuario = new Usuario("Joãozinho");
 		assertFalse(usuario.cadastrar());
 	}
 	
@@ -40,7 +40,7 @@ public class TesteSprint3 {
 	public void testPesquisarLivroNaLista() throws Exception{
 		Usuario usuario = new Usuario("Maria");
 		assertTrue(usuario.cadastrar());
-		assertEquals(SituacaoEnum.DISPONIVEL, usuario.situacaoLivro("Metamorfose"));		
+		assertEquals(SituacaoLivroEnum.DISPONIVEL, usuario.situacaoLivro("Metamorfose"));		
 	}
 	
 	@Test(expected=UsuarioInexistenteException.class)
